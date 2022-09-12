@@ -4,8 +4,12 @@ SudokuField::SudokuField() {
     this->exit = false;
 }
 
-void SudokuField::generateField(int n) { //TODO
+void SudokuField::generateField(int n) {
     this->fieldMap = std::vector<std::vector<CellField>>(n, std::vector<CellField>(n, CellField(10)));
+
+    // TODO
+    // сделать генерацию поля с однозначным решением
+
 }
 
 void SudokuField::printField() {
@@ -81,9 +85,15 @@ void SudokuField::doNextStep() {
     this->changeCell();
 }
 
-bool SudokuField::isEndGame() const { //TODO
+bool SudokuField::isEndGame() const {
     if (this->exit) return true;
-    return false;
+    for (int i = 0; i < this->fieldMap.size(); i++) {
+        for (int j = 0; j < this->fieldMap.size(); j++) {
+            if (!fieldMap[i][j].isRight())
+                return false;
+        }
+    }
+    return true;
 }
 
 bool SudokuField::isExit() const {

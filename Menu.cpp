@@ -13,14 +13,14 @@ int Menu::startMenu() {
 
     std::cout << setTitleText << this->name << setMainText;
     for (unsigned i = 0; i < menuElements.size(); i++) {
-        std::cout << i + 1 << ". " << menuElements[i] << '\n';
+        std::cout << " " << i + 1 << ". " << menuElements[i] << '\n';
     }
     int action;
-    std::cout << "\nВыберите действие: ";
+    std::cout << "\n Выберите действие: ";
     std::cin >> action;
     while (action < 1 || action > menuElements.size()) {
-        std::cout << "Incorrect number!!!\n";
-        std::cout << "Выберите действие: ";
+        std::cout << " Incorrect number!!!\n";
+        std::cout << " Выберите действие: ";
         std::cin >> action;
     }
     return action;
