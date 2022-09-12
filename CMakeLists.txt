@@ -16,6 +16,6 @@ set(SOURCES
         Game.cpp
         CellField.cpp
         Menu.cpp
-        )
+        values.h)
 
 add_executable(Sudoku ${HEADERS} ${SOURCES})
