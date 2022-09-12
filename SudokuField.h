@@ -8,14 +8,16 @@
 
 class SudokuField {
 public:
+    SudokuField();
     void generateField(int n);
     void doNextStep();
-    bool isEndGame();
+    bool isEndGame() const;
+    bool isExit() const;
 
 private:
     void printField();
     void changeCell();
 
     std::vector<std::vector<CellField>> fieldMap;
-    std::string header;
+    bool exit;
 };

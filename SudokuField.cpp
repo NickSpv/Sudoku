@@ -1,16 +1,19 @@
 #include "SudokuField.h"
 
+SudokuField::SudokuField() {
+    this->exit = false;
+}
+
 void SudokuField::generateField(int n) { //TODO
-    this->fieldMap = std::vector<std::vector<CellField>> (n, std::vector<CellField> (n, CellField(10)));
-    this->header = headerName;
+    this->fieldMap = std::vector<std::vector<CellField>>(n, std::vector<CellField>(n, CellField(10)));
 }
 
 void SudokuField::printField() {
     system("clear");
-    std::cout << setTitleText << this->header << setTableText;
+    std::cout << setSecondText << "Чтобы завершить игру введите -1.\n" << setTableText;
 
-    int n = (int)this->fieldMap.size();
-    int rectSize = (int)pow((double)n, 0.5);
+    int n = (int) this->fieldMap.size();
+    int rectSize = (int) pow((double) n, 0.5);
     std::string spaces = "                 ";
 
     std::cout << spaces << "╔";
@@ -53,9 +56,16 @@ void SudokuField::printField() {
 void SudokuField::changeCell() {
     std::vector<int> changedCell(3);
     std::cout << "Введите номер координаты и значение ячейки котрую вы хотите изменить: ";
-    std::cin >> changedCell[0] >> changedCell[1] >> changedCell[2];
-    int n = (int)this->fieldMap.size();
-    if (changedCell[0] > n || changedCell[0] <= 0 || changedCell[1] > n || changedCell[1] <= 0 || changedCell[2] > n || changedCell[2] <= 0){
+
+    std::cin >> changedCell[0];
+    if (changedCell[0] == -1) {
+        this->exit = true;
+        return;
+    }
+    std::cin >> changedCell[1] >> changedCell[2];
+    int n = (int) this->fieldMap.size();
+    if (changedCell[0] > n || changedCell[0] <= 0 || changedCell[1] > n || changedCell[1] <= 0 || changedCell[2] > n ||
+        changedCell[2] <= 0) {
         return;
     }
     if (!this->fieldMap[changedCell[0] - 1][changedCell[1] - 1].isDefaultCell()) {
@@ -71,7 +81,11 @@ void SudokuField::doNextStep() {
     this->changeCell();
 }
 
-bool SudokuField::isEndGame() { //TODO
+bool SudokuField::isEndGame() const { //TODO
+    if (this->exit) return true;
     return false;
 }
 
+bool SudokuField::isExit() const {
+    return exit;
+}

@@ -13,7 +13,11 @@ void Game::startGame() {
                 while (true) {
                     this->sudokuField.doNextStep();
                     if (this->sudokuField.isEndGame()) {
-                        this->gameWin();
+                        if (!this->sudokuField.isExit()){
+                            this->gameWin();
+                        } else {
+                            this->isEndGame = true;
+                        }
                         break;
                     }
                 }
