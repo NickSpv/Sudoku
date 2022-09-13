@@ -39,13 +39,13 @@ void SudokuField::printField() {
     this->exit = false;
 
     system("clear");
-    std::cout << setSecondText << "Чтобы перейти в меню введите -1.\n" << setTableText;
+    std::cout << setSecondText << " Чтобы перейти в меню введите -1.\n" << setTableText;
 
     int n = (int) this->fieldMap.size();
     int rectSize = (int) pow((double) n, 0.5);
     std::string spaces;
     if (n == 4) {
-        spaces = "                                 ";
+        spaces = "                              ";
     } else if (n == 9) {
         spaces = "                     ";
     } else if (n == 16) {
@@ -93,11 +93,11 @@ void SudokuField::printField() {
 
 void SudokuField::changeCell() {
     std::vector<int> changedCell(3);
-    std::cout << "Введите координаты и значение ячейки котрую вы хотите изменить.\n";
+    std::cout << " Введите координаты и значение ячейки котрую вы хотите изменить.\n";
 
     try {
         std::string temp1, temp2, temp3;
-        std::cout << "Строка: ";
+        std::cout << " Строка: ";
         std::cin >> temp1;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -106,11 +106,11 @@ void SudokuField::changeCell() {
             this->exit = true;
             return;
         }
-        std::cout << "Столбец: ";
+        std::cout << " Столбец: ";
         std::cin >> temp2;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Значение: ";
+        std::cout << " Значение: ";
         std::cin >> temp3;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
