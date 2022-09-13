@@ -5,10 +5,17 @@ SudokuField::SudokuField() {
 }
 
 void SudokuField::generateField(int n) {
-    this->fieldMap = std::vector<std::vector<CellField>>(n, std::vector<CellField>(n, CellField(10)));
+    this->fieldMap = std::vector<std::vector<CellField>>(n, std::vector<CellField>(n, CellField(0)));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            this->fieldMap[i][j] = CellField((j + i * (int)pow(n, 0.5) + i / (int)pow(n, 0.5)) % n + 1);
+        }
+    }
 
     // TODO
     // сделать генерацию поля с однозначным решением
+
+
 
 }
 
