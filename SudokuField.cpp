@@ -5,7 +5,7 @@ SudokuField::SudokuField() {
 }
 
 void SudokuField::generateField(int n) {
-    this->fieldMap = std::vector<std::vector<CellField>>(n, std::vector<CellField>(n, CellField(0)));
+    this->fieldMap = std::vector<std::vector<CellField >>(n, std::vector<CellField>(n, CellField(0)));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             this->fieldMap[i][j] = CellField((j + i * (int) pow(n, 0.5) + i / (int) pow(n, 0.5)) % n + 1);
@@ -138,12 +138,33 @@ void SudokuField::doNextStep() {
     this->changeCell();
 }
 
-bool SudokuField::isEndGame() const { //TODO данный вариант не решает многовариантные перестановки
+bool SudokuField::isEndGame() const {
     if (this->exit) return true;
     for (int i = 0; i < this->fieldMap.size(); i++) {
         for (int j = 0; j < this->fieldMap.size(); j++) {
-            if (!fieldMap[i][j].isRight())
-                return false;
+            std::vector<int> check(this->fieldMap.size(), 0);
+            int m = (int) pow(this->fieldMap.size(), 0.5);
+            for (int k = 0; k < this->fieldMap.size(); k++) {
+                if (this->fieldMap[i][k].isVisible() && this->fieldMap[k][j].isVisible()) {
+                    check[this->fieldMap[i][k].getRealValue() - 1]++;
+                    check[this->fieldMap[k][j].getRealValue() - 1]++;
+                } else return false;
+                std::cout << this->fieldMap[i][k].getRealValue() << " "
+                          << this->fieldMap[k][j].getRealValue() << "\n";
+            }
+            for (int k = i / m * m; k < i / m * m + m; k++) {
+                for (int q = j / m * m; q < j / m * m + m; q++) {
+                    if (fieldMap[k][q].isVisible())
+                        check[fieldMap[k][q].getRealValue() - 1]++;
+                    else return false;
+                    std::cout << fieldMap[k][q].getRealValue() << "\n";
+                }
+            }
+            for (auto k: check) {
+                if (k != 3) {
+                    return false;
+                }
+            }
         }
     }
     return true;
@@ -191,3 +212,4 @@ void SudokuField::transpose() {
     }
     this->fieldMap = temp;
 }
+
