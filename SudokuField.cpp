@@ -47,7 +47,7 @@ void SudokuField::printField() {
     if (n == 4) {
         spaces = "                              ";
     } else if (n == 9) {
-        spaces = "                   ";
+        spaces = "                 ";
     } else if (n == 16) {
         spaces = "                                         ";
     }
