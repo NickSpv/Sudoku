@@ -2,17 +2,15 @@
 
 class CellField {
 public:
-    explicit CellField(int rightValue_);
-    void setRealValue(int realValue_);
+    explicit CellField(int value_);
+    void setValue(int value_);
     void hide();
-    bool isRight() const;
     bool isVisible() const;
-    int getRealValue() const;
+    int getValue() const;
     bool isDefaultCell() const;
 
 private:
-    int rightValue;
-    int realValue;
+    int value;
     bool visible;
     bool defaultCell;
 };
