@@ -1,33 +1,28 @@
 #include "CellField.h"
 
-CellField::CellField(int rightValue_) {
-    this->rightValue = rightValue_;
+CellField::CellField(int value_) {
     this->visible = true;
-    this->realValue = rightValue_;
+    this->value = value_;
     this->defaultCell = true;
 }
 
 void CellField::hide() {
     this->visible = false;
-    this->realValue = -1;
+    this->value = -1;
     this->defaultCell = false;
-}
-
-bool CellField::isRight() const {
-    return this->rightValue == this->realValue;
 }
 
 bool CellField::isVisible() const {
     return this->visible;
 }
 
-void CellField::setRealValue(int realValue_) {
-    this->realValue = realValue_;
+void CellField::setValue(int value_) {
+    this->value = value_;
     this->visible = true;
 }
 
-int CellField::getRealValue() const {
-    return realValue;
+int CellField::getValue() const {
+    return value;
 }
 
 bool CellField::isDefaultCell() const {
