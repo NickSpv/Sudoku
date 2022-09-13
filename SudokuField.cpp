@@ -60,13 +60,13 @@ void SudokuField::printField() {
         std::cout << "\n" << spaces << "║ ";
         for (int j = 0; j < n; j++) {
             if (this->fieldMap[i][j].isDefaultCell()) {
-                std::cout << setMainText << this->fieldMap[i][j].getRealValue() << setTableText;
+                std::cout << setMainText << this->fieldMap[i][j].getValue() << setTableText;
             } else if (this->fieldMap[i][j].isVisible()) {
-                std::cout << setSecondMainText << this->fieldMap[i][j].getRealValue() << setTableText;
+                std::cout << setSecondMainText << this->fieldMap[i][j].getValue() << setTableText;
             } else {
                 std::cout << " ";
             }
-            if (this->fieldMap[i][j].getRealValue() < 10) std::cout << " ";
+            if (this->fieldMap[i][j].getValue() < 10) std::cout << " ";
             std::cout << (((j + 1) % rectSize == 0) ? " ║ " : " │ ");
         }
 
@@ -128,7 +128,7 @@ void SudokuField::changeCell() {
     if (this->fieldMap[changedCell[0] - 1][changedCell[1] - 1].isDefaultCell()) {
         return;
     } else {
-        this->fieldMap[changedCell[0] - 1][changedCell[1] - 1].setRealValue(changedCell[2]);
+        this->fieldMap[changedCell[0] - 1][changedCell[1] - 1].setValue(changedCell[2]);
         return;
     }
 }
@@ -146,18 +146,18 @@ bool SudokuField::isEndGame() const {
             int m = (int) pow(this->fieldMap.size(), 0.5);
             for (int k = 0; k < this->fieldMap.size(); k++) {
                 if (this->fieldMap[i][k].isVisible() && this->fieldMap[k][j].isVisible()) {
-                    check[this->fieldMap[i][k].getRealValue() - 1]++;
-                    check[this->fieldMap[k][j].getRealValue() - 1]++;
+                    check[this->fieldMap[i][k].getValue() - 1]++;
+                    check[this->fieldMap[k][j].getValue() - 1]++;
                 } else return false;
-                std::cout << this->fieldMap[i][k].getRealValue() << " "
-                          << this->fieldMap[k][j].getRealValue() << "\n";
+                std::cout << this->fieldMap[i][k].getValue() << " "
+                          << this->fieldMap[k][j].getValue() << "\n";
             }
             for (int k = i / m * m; k < i / m * m + m; k++) {
                 for (int q = j / m * m; q < j / m * m + m; q++) {
                     if (fieldMap[k][q].isVisible())
-                        check[fieldMap[k][q].getRealValue() - 1]++;
+                        check[fieldMap[k][q].getValue() - 1]++;
                     else return false;
-                    std::cout << fieldMap[k][q].getRealValue() << "\n";
+                    std::cout << fieldMap[k][q].getValue() << "\n";
                 }
             }
             for (auto k: check) {
