@@ -2,7 +2,9 @@
 
 Menu::Menu() {
     menuElements = {
-            "Начало игры",
+            "Простой уровень: 2×2󠁢󠁳󠁣󠁴",
+            "Нормальный уровень: 3×3󠁢󠁳󠁣󠁴",
+            "Сложный уровень: 4×4 (нужно развернуть консоль на весь экран)",
             "Выход"
     };
     name = mainName;
@@ -15,13 +17,24 @@ int Menu::startMenu() {
     for (unsigned i = 0; i < menuElements.size(); i++) {
         std::cout << " " << i + 1 << ". " << menuElements[i] << '\n';
     }
+
+    std::string action_str;
     int action;
-    std::cout << "\n Выберите действие: ";
-    std::cin >> action;
-    while (action < 1 || action > menuElements.size()) {
-        std::cout << " Incorrect number!!!\n";
-        std::cout << " Выберите действие: ";
-        std::cin >> action;
-    }
+
+    bool continueFlag;
+    do {
+        continueFlag = true;
+        std::cout << "\n Выберите действие: ";
+        std::cin >> action_str;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        try {
+            action = std::stoi(action_str);
+        } catch (std::invalid_argument &err) {
+            std::cout << " Некорректное число!!!\n";
+            continueFlag = false;
+        }
+    } while (!continueFlag || action < 1 || action > menuElements.size());
+
     return action;
 }

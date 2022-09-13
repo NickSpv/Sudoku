@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <limits>
 #include "values.h"
 
 class Menu {
