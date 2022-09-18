@@ -5,6 +5,7 @@ SudokuField::SudokuField() {
 }
 
 void SudokuField::generateField(int n) {
+    this->size_n = n;
     this->fieldMap = std::vector<std::vector<CellField >>(n, std::vector<CellField>(n, CellField(0)));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -41,24 +42,23 @@ void SudokuField::printField() {
     system("clear");
     std::cout << setSecondText << " Чтобы перейти в меню введите -1.\n" << setTableText;
 
-    int n = (int) this->fieldMap.size();
-    int rectSize = (int) pow((double) n, 0.5);
+    int rectSize = (int) pow((double) size_n, 0.5);
     std::string spaces;
-    if (n == 4) {
+    if (size_n == 4) {
         spaces = "                              ";
-    } else if (n == 9) {
+    } else if (size_n == 9) {
         spaces = "                 ";
-    } else if (n == 16) {
+    } else if (size_n == 16) {
         spaces = "                                         ";
     }
 
     std::cout << spaces << "╔";
-    for (int j = 0; j < n - 1; j++) std::cout << (((j + 1) % rectSize == 0) ? "════╦" : "════╤");
+    for (int j = 0; j < size_n - 1; j++) std::cout << (((j + 1) % rectSize == 0) ? "════╦" : "════╤");
     std::cout << "════╗";
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < size_n; i++) {
         std::cout << "\n" << spaces << "║ ";
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < size_n; j++) {
             if (this->fieldMap[i][j].isDefaultCell()) {
                 std::cout << setMainText << this->fieldMap[i][j].getValue() << setTableText;
             } else if (this->fieldMap[i][j].isVisible()) {
@@ -70,9 +70,9 @@ void SudokuField::printField() {
             std::cout << (((j + 1) % rectSize == 0) ? " ║ " : " │ ");
         }
 
-        if (i < n - 1) {
+        if (i < size_n - 1) {
             std::cout << "\n" << spaces << (((i + 1) % rectSize == 0) ? "╠" : "╟");
-            for (int j = 0; j < n - 1; j++) {
+            for (int j = 0; j < size_n - 1; j++) {
                 if ((i + 1) % rectSize == 0) {
                     std::cout << (((j + 1) % rectSize == 0) ? "════╬" : "════╪");
                 } else {
@@ -82,7 +82,7 @@ void SudokuField::printField() {
             std::cout << (((i + 1) % rectSize == 0) ? "════╣" : "────╢");
         } else {
             std::cout << "\n" << spaces << "╚";
-            for (int j = 0; j < n - 1; j++) {
+            for (int j = 0; j < size_n - 1; j++) {
                 std::cout << (((j + 1) % rectSize == 0) ? "════╩" : "════╧");
             }
             std::cout << "════╝\n";
@@ -120,7 +120,7 @@ void SudokuField::changeCell() {
         return;
     }
 
-    int n = (int) this->fieldMap.size();
+    int n = (int) size_n;
     if (changedCell[0] > n || changedCell[0] <= 0 || changedCell[1] > n || changedCell[1] <= 0 || changedCell[2] > n ||
         changedCell[2] <= 0) {
         return;
@@ -140,24 +140,21 @@ void SudokuField::doNextStep() {
 
 bool SudokuField::isEndGame() const {
     if (this->exit) return true;
-    for (int i = 0; i < this->fieldMap.size(); i++) {
-        for (int j = 0; j < this->fieldMap.size(); j++) {
-            std::vector<int> check(this->fieldMap.size(), 0);
-            int m = (int) pow(this->fieldMap.size(), 0.5);
-            for (int k = 0; k < this->fieldMap.size(); k++) {
+    for (int i = 0; i < size_n; i++) {
+        for (int j = 0; j < size_n; j++) {
+            std::vector<int> check(size_n, 0);
+            int sqrt_n = (int) pow(size_n, 0.5);
+            for (int k = 0; k < size_n; k++) {
                 if (this->fieldMap[i][k].isVisible() && this->fieldMap[k][j].isVisible()) {
                     check[this->fieldMap[i][k].getValue() - 1]++;
                     check[this->fieldMap[k][j].getValue() - 1]++;
                 } else return false;
-                std::cout << this->fieldMap[i][k].getValue() << " "
-                          << this->fieldMap[k][j].getValue() << "\n";
             }
-            for (int k = i / m * m; k < i / m * m + m; k++) {
-                for (int q = j / m * m; q < j / m * m + m; q++) {
+            for (int k = i / sqrt_n * sqrt_n; k < i / sqrt_n * sqrt_n + sqrt_n; k++) {
+                for (int q = j / sqrt_n * sqrt_n; q < j / sqrt_n * sqrt_n + sqrt_n; q++) {
                     if (fieldMap[k][q].isVisible())
                         check[fieldMap[k][q].getValue() - 1]++;
                     else return false;
-                    std::cout << fieldMap[k][q].getValue() << "\n";
                 }
             }
             for (auto k: check) {
@@ -174,42 +171,40 @@ bool SudokuField::isExit() const {
     return exit;
 }
 
-void SudokuField::swapCols(int l, int r, bool isTheWholeSection) {
-    int n = (int) pow(this->fieldMap.size(), 0.5);
+void SudokuField::swapCols(int left, int right, bool isTheWholeSection) {
+    int sqrt_n = (int) pow(size_n, 0.5);
     if (isTheWholeSection) {
-        l /= n;
-        r /= n;
-        for (int i = 0; i < n; i++) {
+        left /= sqrt_n;
+        right /= sqrt_n;
+        for (int i = 0; i < sqrt_n; i++) {
             for (auto &j: this->fieldMap) {
-                std::swap(j[l * n + i], j[r * n + i]);
+                std::swap(j[left * sqrt_n + i], j[right * sqrt_n + i]);
             }
         }
     } else {
         for (auto &i: this->fieldMap) {
-            std::swap(i[l], i[r]);
+            std::swap(i[left], i[right]);
         }
     }
 }
 
-void SudokuField::swapRows(int l, int r, bool isTheWholeSection) {
-    int n = (int) pow(this->fieldMap.size(), 0.5);
+void SudokuField::swapRows(int left, int right, bool isTheWholeSection) {
+    int sqrt_n = (int) pow(size_n, 0.5);
     if (isTheWholeSection) {
-        l /= n;
-        r /= n;
-        for (int i = 0; i < n; i++) std::swap(this->fieldMap[l * n + i], this->fieldMap[r * n + i]);
+        left /= sqrt_n;
+        right /= sqrt_n;
+        for (int i = 0; i < sqrt_n; i++) std::swap(this->fieldMap[left * sqrt_n + i], this->fieldMap[right * sqrt_n + i]);
     } else {
-        std::swap(this->fieldMap[l], this->fieldMap[r]);
+        std::swap(this->fieldMap[left], this->fieldMap[right]);
     }
 }
 
 void SudokuField::transpose() {
-    int n = (int) this->fieldMap.size();
-    std::vector<std::vector<CellField>> temp(n, std::vector<CellField>(n, CellField(0)));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+    std::vector<std::vector<CellField>> temp(size_n, std::vector<CellField>(size_n, CellField(0)));
+    for (int i = 0; i < size_n; i++) {
+        for (int j = 0; j < size_n; j++) {
             temp[j][i] = this->fieldMap[i][j];
         }
     }
     this->fieldMap = temp;
 }
-
