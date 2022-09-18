@@ -20,11 +20,12 @@ public:
 private:
     void printField();
     void changeCell();
-    void swapCols(int l, int r, bool isTheWholeSection);
-    void swapRows(int l, int r, bool isTheWholeSection);
+    void swapCols(int left, int right, bool isTheWholeSection);
+    void swapRows(int left, int right, bool isTheWholeSection);
     void transpose();
 
 
     std::vector<std::vector<CellField>> fieldMap;
     bool exit;
+    int size_n;
 };
